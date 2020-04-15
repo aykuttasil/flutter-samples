@@ -11,7 +11,7 @@ class _SoundsPageState extends State<SoundsPage> {
     return Flexible(
       fit: FlexFit.tight,
       flex: 1,
-      child: FlatButton(
+      child: RaisedButton(
         color: color,
         onPressed: () async {
           final player = AudioCache(prefix: 'audio/');

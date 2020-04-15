@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sample/pages/sounds_page.dart';
+import 'package:sample/pages/quizzler_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SoundsPage(),
+      home: QuizzlerPage(),
     );
   }
 }
