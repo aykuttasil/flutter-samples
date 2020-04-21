@@ -33,17 +33,27 @@ class _InputPageState extends State<InputPage> {
           Expanded(
             child: Row(
               children: [
-                customBox(),
-                customBox(),
+                Expanded(
+                  child: ReusableCard(),
+                ),
+                Expanded(
+                  child: ReusableCard(),
+                ),
               ],
             ),
           ),
-          customBox(),
+          Expanded(
+            child: ReusableCard(),
+          ),
           Expanded(
             child: Row(
               children: [
-                customBox(),
-                customBox(),
+                Expanded(
+                  child: ReusableCard(),
+                ),
+                Expanded(
+                  child: ReusableCard(),
+                ),
               ],
             ),
           ),
@@ -51,17 +61,16 @@ class _InputPageState extends State<InputPage> {
       ),
     );
   }
+}
 
-  Widget customBox() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: boxColor,
-          ),
-        ),
+class ReusableCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(15.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: boxColor,
       ),
     );
   }
