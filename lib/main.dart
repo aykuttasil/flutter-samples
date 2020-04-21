@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sample/pages/quizzler_page.dart';
+import 'package:sample/pages/bmi_calculator.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: QuizzlerPage(),
+      home: BMICalculator(),
     );
   }
 }
