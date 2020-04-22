@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+const labelTextStyle = TextStyle(
+  fontSize: 18.0,
+  color: Color(0xFF8D8E98),
+);
+
 const scaffoldBackgroundColor = Color(0xFF090D22);
 const appPrimaryColor = Color(0xFF090D22);
-const boxColor = Colors.red;
-const selectedBoxColor = Color(0xFFed8484);
+
+const bottomContainerHeight = 80.0;
+const activeCardColour = Color(0xFF1D1E33);
+const inactiveCardColour = Color(0XFF111328);
+const bottomContainerColour = Color(0xFFEB1555);
 
 class BMICalculator extends StatelessWidget {
   @override
@@ -35,6 +43,7 @@ class _InputPageState extends State<InputPage> {
         title: Text("BMI CALCULATOR"),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: Row(
@@ -42,8 +51,8 @@ class _InputPageState extends State<InputPage> {
                 Expanded(
                   child: ReusableCard(
                     colour: selectedGender == GenderType.MALE
-                        ? selectedBoxColor
-                        : boxColor,
+                        ? activeCardColour
+                        : inactiveCardColour,
                     cardChild: IconContent(
                         cardIcon: FontAwesomeIcons.mars, cardText: "MALE"),
                     onPress: () {
@@ -56,8 +65,8 @@ class _InputPageState extends State<InputPage> {
                 Expanded(
                   child: ReusableCard(
                     colour: selectedGender == GenderType.FEMALE
-                        ? selectedBoxColor
-                        : boxColor,
+                        ? activeCardColour
+                        : inactiveCardColour,
                     cardChild: IconContent(
                         cardIcon: FontAwesomeIcons.venus, cardText: "FEMALE"),
                     onPress: () {
@@ -71,7 +80,41 @@ class _InputPageState extends State<InputPage> {
             ),
           ),
           Expanded(
-            child: ReusableCard(),
+            child: ReusableCard(
+              cardChild: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'HEIGHT',
+                    style: labelTextStyle,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        '180',
+                        style: TextStyle(
+                          fontSize: 50,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      Text(
+                        'cm',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
           Expanded(
             child: Row(
@@ -112,7 +155,7 @@ class IconContent extends StatelessWidget {
         ),
         Text(
           cardText,
-          style: TextStyle(fontSize: 20),
+          style: labelTextStyle,
         )
       ],
     );
@@ -124,7 +167,8 @@ class ReusableCard extends StatelessWidget {
   final Widget cardChild;
   final Function onPress;
 
-  ReusableCard({this.colour = boxColor, this.cardChild, this.onPress});
+  ReusableCard(
+      {this.colour = inactiveCardColour, this.cardChild, this.onPress});
 
   @override
   Widget build(BuildContext context) {
