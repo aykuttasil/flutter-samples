@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -35,6 +36,9 @@ enum GenderType { MALE, FEMALE, NOTHING }
 
 class _InputPageState extends State<InputPage> {
   GenderType selectedGender;
+  int height = 150;
+  int weight = 60;
+  int age = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +101,7 @@ class _InputPageState extends State<InputPage> {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        '180',
+                        height.toString(),
                         style: TextStyle(
                           fontSize: 50,
                           fontWeight: FontWeight.w900,
@@ -112,6 +116,28 @@ class _InputPageState extends State<InputPage> {
                       )
                     ],
                   ),
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      activeTrackColor: Colors.white,
+                      inactiveTrackColor: Color(0xFF8D8E98),
+                      overlayColor: Color(0x29EB1555),
+                      thumbColor: Color(0xFFEB1555),
+                      thumbShape:
+                          RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                      overlayShape:
+                          RoundSliderOverlayShape(overlayRadius: 30.0),
+                    ),
+                    child: Slider(
+                      value: height.toDouble(),
+                      min: 120.0,
+                      max: 250.0,
+                      onChanged: (newValue) {
+                        setState(() {
+                          height = newValue.toInt();
+                        });
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
@@ -120,15 +146,118 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: ReusableCard(),
+                  child: ReusableCard(
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'WEIGHT',
+                          style: labelTextStyle,
+                        ),
+                        Text(
+                          weight.toString(),
+                          style: TextStyle(
+                            fontSize: 50,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RoundedIconButton(
+                              icon: FontAwesomeIcons.minus,
+                              onPressed: () {
+                                setState(() {
+                                  weight--;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            RoundedIconButton(
+                              icon: FontAwesomeIcons.plus,
+                              onPressed: () {
+                                setState(() {
+                                  weight++;
+                                });
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
                 Expanded(
-                  child: ReusableCard(),
+                  child: ReusableCard(
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'AGE',
+                          style: labelTextStyle,
+                        ),
+                        Text(
+                          age.toString(),
+                          style: TextStyle(
+                            fontSize: 50,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RoundedIconButton(
+                              icon: FontAwesomeIcons.minus,
+                              onPressed: () {
+                                setState(() {
+                                  age--;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            RoundedIconButton(
+                              icon: FontAwesomeIcons.plus,
+                              onPressed: () {
+                                setState(() {
+                                  age++;
+                                });
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class RoundedIconButton extends StatelessWidget {
+  final IconData icon;
+  final Function onPressed;
+
+  RoundedIconButton({this.icon, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      fillColor: Color(0xFF4C4F5E),
+      onPressed: onPressed,
+      child: Icon(icon),
+      shape: CircleBorder(),
+      constraints: BoxConstraints.tightFor(
+        width: 50.0,
+        height: 50.0,
       ),
     );
   }
