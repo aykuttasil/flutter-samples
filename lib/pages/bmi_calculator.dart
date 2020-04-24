@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'bmi_result_page.dart';
+
 const labelTextStyle = TextStyle(
   fontSize: 18.0,
   color: Color(0xFF8D8E98),
@@ -15,6 +17,8 @@ const activeCardColour = Color(0xFF1D1E33);
 const inactiveCardColour = Color(0XFF111328);
 const bottomContainerColour = Color(0xFFEB1555);
 
+enum GenderType { MALE, FEMALE, NOTHING }
+
 class BMICalculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,6 +27,9 @@ class BMICalculator extends StatelessWidget {
           scaffoldBackgroundColor: scaffoldBackgroundColor,
           primaryColor: appPrimaryColor),
       home: InputPage(),
+      routes: {
+        '/result': (context) => ResultPage(),
+      },
     );
   }
 }
@@ -31,8 +38,6 @@ class InputPage extends StatefulWidget {
   @override
   _InputPageState createState() => _InputPageState();
 }
-
-enum GenderType { MALE, FEMALE, NOTHING }
 
 class _InputPageState extends State<InputPage> {
   GenderType selectedGender;
@@ -93,7 +98,7 @@ class _InputPageState extends State<InputPage> {
                     style: labelTextStyle,
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 2,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +108,7 @@ class _InputPageState extends State<InputPage> {
                       Text(
                         height.toString(),
                         style: TextStyle(
-                          fontSize: 50,
+                          fontSize: 30,
                           fontWeight: FontWeight.w900,
                         ),
                       ),
@@ -236,7 +241,49 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
+          BottomButton(
+            title: 'Calculate',
+            onPressed: () {
+              var bmiHandle = BMIHandle(weight: weight, height: height);
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultPage(
+                    bmiResult: bmiHandle.calculateBMI(),
+                    resultText: bmiHandle.getResult(),
+                    interpretation: bmiHandle.getInterpretation(),
+                  ),
+                ),
+              );
+              // Navigator.pushNamed(context, '/result');
+            },
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class BottomButton extends StatelessWidget {
+  final String title;
+  final Function onPressed;
+
+  BottomButton({this.title, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        padding: EdgeInsets.all(15),
+        color: Colors.pink,
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
     );
   }
