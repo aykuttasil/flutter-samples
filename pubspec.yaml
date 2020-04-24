@@ -27,6 +27,7 @@ dependencies:
   google_fonts: ^1.0.0
   audioplayers: ^0.15.1
   font_awesome_flutter: ^8.8.1
+  geolocator: ^5.3.1
 
 dev_dependencies:
   flutter_test:
