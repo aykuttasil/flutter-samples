@@ -9,7 +9,7 @@ class ProfilePage extends StatelessWidget {
           title: Center(
             child: Text(
               "Samples",
-              style: GoogleFonts.adaminaTextTheme().bodyText1,
+              style: GoogleFonts.adaminaTextTheme().body1,
             ),
           ),
         ),

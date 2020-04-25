@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sample/pages/clima/clima_page.dart';
+import 'package:sample/pages/bmi_calculator.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,9 +11,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.red,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ClimaPage(),
+      home: BMICalculator(),
     );
   }
 }
