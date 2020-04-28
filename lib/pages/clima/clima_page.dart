@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:sample/pages/clima/location_service.dart';
+import 'package:http/http.dart' as http;
+
+const apiKey = 'ce9d4917971b1d0fbf47a6282b0c26d8';
 
 class ClimaScreen extends StatelessWidget {
   @override
@@ -29,6 +31,15 @@ class _ClimaPageState extends State<ClimaPage> {
     await loc.getCurrentLocation();
 
     print('lat: ${loc.latitude}, long: ${loc.longitude}');
+    getData(loc.latitude.toString(), loc.longitude.toString());
+  }
+
+  void getData(String lat, String lon) async {
+    var url =
+        'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey';
+    var response = await http.get(url);
+    print(url);
+    print(response.body);
   }
 
   @override
