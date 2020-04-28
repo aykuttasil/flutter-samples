@@ -38,7 +38,6 @@ class _ClimaPageState extends State<ClimaPage> {
     var url =
         'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey';
     var response = await http.get(url);
-    print(url);
     print(response.body);
   }
 
