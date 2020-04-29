@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:sample/pages/clima/location_service.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sample/pages/clima/services/location.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-const apiKey = 'ce9d4917971b1d0fbf47a6282b0c26d8';
+import 'package:sample/pages/clima/services/networking.dart';
 
 class ClimaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark().copyWith(),
-      home: ClimaPage(),
+      home: ClimaLoadingPage(),
     );
   }
 }
 
-class ClimaPage extends StatefulWidget {
+class ClimaLoadingPage extends StatefulWidget {
   @override
-  _ClimaPageState createState() => _ClimaPageState();
+  _ClimaLoadingPageState createState() => _ClimaLoadingPageState();
 }
 
-class _ClimaPageState extends State<ClimaPage> {
+class _ClimaLoadingPageState extends State<ClimaLoadingPage> {
   @override
   void initState() {
     super.initState();
@@ -31,14 +33,12 @@ class _ClimaPageState extends State<ClimaPage> {
     await loc.getCurrentLocation();
 
     print('lat: ${loc.latitude}, long: ${loc.longitude}');
-    getData(loc.latitude.toString(), loc.longitude.toString());
-  }
 
-  void getData(String lat, String lon) async {
-    var url =
-        'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey';
-    var response = await http.get(url);
-    print(response.body);
+    var networkHelper = NetworkHelper();
+    var weatherData = await networkHelper.getWeatherData(
+        loc.latitude.toString(), loc.longitude.toString());
+
+    
   }
 
   @override
@@ -46,9 +46,9 @@ class _ClimaPageState extends State<ClimaPage> {
     return Scaffold(
       body: Container(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[],
+          child: SpinKitDoubleBounce(
+            color: Colors.white,
+            size: 50,
           ),
         ),
       ),
