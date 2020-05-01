@@ -37,8 +37,6 @@ class _ClimaLoadingPageState extends State<ClimaLoadingPage> {
     var networkHelper = NetworkHelper();
     var weatherData = await networkHelper.getWeatherData(
         loc.latitude.toString(), loc.longitude.toString());
-
-    
   }
 
   @override
