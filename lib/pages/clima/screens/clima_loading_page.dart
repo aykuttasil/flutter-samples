@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:sample/pages/clima/services/location.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-import 'package:sample/pages/clima/services/networking.dart';
+import 'package:sample/pages/clima/screens/clima_location_screen.dart';
+import 'package:sample/pages/clima/services/weather.dart';
 
 class ClimaScreen extends StatelessWidget {
   @override
@@ -25,18 +22,22 @@ class _ClimaLoadingPageState extends State<ClimaLoadingPage> {
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getLocationData();
   }
 
-  void getLocation() async {
-    var loc = LocationService();
-    await loc.getCurrentLocation();
+  void getLocationData() async {
+    var weatherData = await WeatherModel().getLocationWeather();
 
-    print('lat: ${loc.latitude}, long: ${loc.longitude}');
-
-    var networkHelper = NetworkHelper();
-    var weatherData = await networkHelper.getWeatherData(
-        loc.latitude.toString(), loc.longitude.toString());
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return ClimaLocationScreen(
+            locationWeather: weatherData,
+          );
+        },
+      ),
+    );
   }
 
   @override
