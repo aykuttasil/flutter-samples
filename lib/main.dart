@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sample/pages/clima/screens/clima_loading_page.dart';
+
+import 'pages/bitcoin_ticker/bitcoin_price_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: ClimaScreen(),
+      home: PriceScreen(),
     );
   }
 }
