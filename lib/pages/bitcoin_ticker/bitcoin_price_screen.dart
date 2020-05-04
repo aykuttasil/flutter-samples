@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
 
+import 'package:sample/pages/bitcoin_ticker/bitcoin_service.dart';
+
 class PriceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -11,8 +13,6 @@ class PriceScreen extends StatelessWidget {
     );
   }
 }
-
-const kCurrencyList = <String>['TL', 'USD', 'EUR'];
 
 class PricePage extends StatefulWidget {
   @override
@@ -39,6 +39,7 @@ class _PricePageState extends State<PricePage> {
       onChanged: (value) {
         setState(() {
           selectedCurrency = value;
+          getData();
         });
       },
     );
@@ -52,40 +53,110 @@ class _PricePageState extends State<PricePage> {
     return CupertinoPicker(
         backgroundColor: Colors.lightBlue,
         itemExtent: 30,
-        onSelectedItemChanged: (index) {},
+        onSelectedItemChanged: (index) {
+          setState(() {
+            selectedCurrency = items[index].data;
+            getData();
+          });
+        },
         children: items);
+  }
+
+  Map<String, String> coinValues = {};
+  bool isWaiting = false;
+
+  void getData() async {
+    isWaiting = true;
+    try {
+      var data = await BitcoinService().getCoinData(selectedCurrency);
+      isWaiting = false;
+      setState(() {
+        coinValues = data;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  Column makeCards() {
+    List<CryptoCard> cryptoCards = [];
+    for (String crypto in cryptoList) {
+      cryptoCards.add(
+        CryptoCard(
+          cryptoCurrency: crypto,
+          selectedCurrency: selectedCurrency,
+          value: isWaiting ? '?' : coinValues[crypto],
+        ),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: cryptoCards,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Coin Ticker')),
+        title: Text('🤑 Coin Ticker'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Card(
-              color: Colors.lightBlue,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text('1 BTC = ???'),
-                ),
-              ),
+          makeCards(),
+          Container(
+            height: 150.0,
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(bottom: 30.0),
+            color: Colors.lightBlue,
+            child: Platform.isIOS ? getCupertinoPicker() : getAndroidDropdown(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CryptoCard extends StatelessWidget {
+  const CryptoCard({
+    this.value,
+    this.selectedCurrency,
+    this.cryptoCurrency,
+  });
+
+  final String value;
+  final String selectedCurrency;
+  final String cryptoCurrency;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+      child: Card(
+        color: Colors.lightBlueAccent,
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+          child: Text(
+            '1 $cryptoCurrency = $value $selectedCurrency',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.white,
             ),
           ),
-          Container(
-            height: 150,
-            color: Colors.lightBlue,
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(bottom: 30),
-            child: Platform.isIOS ? getCupertinoPicker() : getAndroidDropdown(),
-          )
-        ],
+        ),
       ),
     );
   }
