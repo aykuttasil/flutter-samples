@@ -4,7 +4,7 @@ import 'dart:io' show Platform;
 
 import 'package:sample/pages/bitcoin_ticker/bitcoin_service.dart';
 
-class PriceScreen extends StatelessWidget {
+class BitcoinPriceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
